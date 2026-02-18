@@ -1,12 +1,40 @@
-# Codex + Claude Code + Gemini CLI Workspace Move/Sync Toolkit
+# AI Workspace Continuity Engine for Codex, Claude Code, and Gemini CLI
 
-One-command migration setup for AI coding workspaces using **OpenAI Codex CLI**, **Anthropic Claude Code**, and **Google Gemini CLI**.
+A high-impact migration toolkit for **OpenAI Codex CLI**, **Anthropic Claude Code**, and **Google Gemini CLI**.
 
-If you move a workspace folder (for example `Download -> Documents`) or sync it to another machine (Dropbox, external drive, git clone), this toolkit rewires local paths so your AI CLI setup keeps working.
+Move your workspace anywhere, run one command, and recover critical local wiring fast: memory links, MCP paths, and trusted-folder paths.
+
+## Why This Feels New
+
+Most migration fixes are tool-by-tool and manual.
+This project acts as a single continuity layer across three major AI coding CLIs.
+
+Result: after a folder move or device sync, your setup is recoverable in minutes instead of a long checklist.
+
+## What Makes It Valuable
+
+- One setup flow for Codex + Claude + Gemini environments
+- Cross-platform scripts: Termux/Linux/macOS + Windows PowerShell
+- Practical fix for real breakpoints after moves/syncs
+- Beginner-friendly documentation for non-technical users
 
 ## Search Keywords
 
-Codex CLI workspace migration, Claude Code memory symlink fix, Gemini CLI MCP path update, AI coding assistant setup after folder move, Termux Claude Code setup, Dropbox AI project sync.
+Codex CLI workspace migration, Claude Code memory symlink fix, Gemini CLI MCP path update, AI coding assistant setup after folder move, Termux Claude Code setup, Dropbox AI project sync, AI workspace continuity.
+
+## Before vs After
+
+Before:
+- AI tools point to stale paths
+- Claude memory stops syncing across subprojects
+- Gemini MCP and trust settings break after relocation
+- Multi-device setup becomes fragile
+
+After:
+- Workspace paths rewired with one command
+- Claude shared memory links repaired
+- Gemini MCP/trusted-folder paths updated
+- Codex/Claude/Gemini workflows recover quickly
 
 ## What This Toolkit Fixes
 
@@ -17,13 +45,13 @@ After a workspace move, these are commonly broken:
 - Gemini MCP paths in `~/.gemini/settings.json`
 - Gemini trusted folder paths in `~/.gemini/trustedFolders.json`
 
-This project repairs those in one run.
+This toolkit repairs those in one run.
 
 ## Who This Is For
 
 - Developers using **Codex CLI**, **Claude Code**, or **Gemini CLI**
-- Users running AI coding workflows across multiple devices
 - Teams sharing AI project folders via Dropbox/Git
+- Users running AI coding workflows across multiple devices
 - Termux users on Android who move project folders often
 
 ## Quick Start
@@ -60,9 +88,9 @@ Full walkthrough: `docs/MOVE_AND_SYNC_GUIDE.md`
 
 ## Codex / Claude / Gemini Notes
 
-- **Codex CLI**: no special config needed here, but your workspace paths stay consistent after a move.
+- **Codex CLI**: path continuity improves project stability after moves.
 - **Claude Code**: memory symlinks are repaired to `workspace/.memory`.
-- **Gemini CLI**: MCP/trusted-folder paths are updated to the new workspace location.
+- **Gemini CLI**: MCP and trusted-folder paths are rewritten to the current workspace location.
 
 ## Troubleshooting
 

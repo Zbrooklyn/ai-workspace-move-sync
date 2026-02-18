@@ -1,12 +1,17 @@
 # Codex + Claude Code + Gemini CLI Move and Sync Guide (Beginner Friendly)
 
-This guide shows how to keep your AI coding workspace working after moving/syncing folders.
+This is the practical playbook for restoring AI workspace continuity after folder moves and device syncs.
 
-Supported workflows in this guide:
+Supported workflows:
 
 1. **OpenAI Codex CLI** workspace continuity
 2. **Anthropic Claude Code** memory-link repair
 3. **Google Gemini CLI** MCP/trust path repair
+
+## Why This Guide Matters
+
+When a workspace path changes, AI tools often fail in silent and frustrating ways.
+This guide gives you a fast recovery path with copy-paste commands.
 
 ## When To Use This
 
