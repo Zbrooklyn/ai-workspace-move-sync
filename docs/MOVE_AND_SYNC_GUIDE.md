@@ -1,85 +1,78 @@
-# Codex + Claude Code + Gemini CLI Move and Sync Guide (Beginner Friendly)
+# Move and Sync Guide for Codex CLI, Claude Code, and Gemini CLI
 
-This is the practical playbook for restoring AI workspace continuity after folder moves and device syncs.
+This guide is for the moments when your workspace path changes and things start failing quietly.
 
-Supported workflows:
+Use it after:
 
-1. **OpenAI Codex CLI** workspace continuity
-2. **Anthropic Claude Code** memory-link repair
-3. **Google Gemini CLI** MCP/trust path repair
+- moving your workspace (example: `Download -> Documents`)
+- opening the same workspace on another computer
+- syncing with Dropbox/Git and using a different local path
 
-## Why This Guide Matters
+## Quick Recovery (Recommended)
 
-When a workspace path changes, AI tools often fail in silent and frustrating ways.
-This guide gives you a fast recovery path with copy-paste commands.
-
-## When To Use This
-
-Use this guide when:
-
-- You move a project folder (example: `Download -> Documents`)
-- You open the workspace on a second machine (Dropbox/Git copy)
-- AI tools stop finding memory, MCP scripts, or trusted folders
-
-## One Command Rule
-
-Run setup once after any move/sync.
+Run the full setup once.
 
 ### Termux / Linux / macOS
 
 ```bash
+cd /path/to/ai-workspace-move-sync
 bash setup-workspace.sh /path/to/workspace
 ```
 
 ### Windows (PowerShell)
 
 ```powershell
+cd C:\path\to\ai-workspace-move-sync
 .\setup-workspace.ps1 -WorkspacePath "C:\path\to\workspace"
 ```
 
-## Scenario 1: Move Workspace On The Same Device
+If you skip `WORKSPACE_PATH`, the script uses your current directory.
 
-### Steps (Termux / Linux / macOS)
+What this command does:
 
-1. Move workspace to the new folder.
-2. Run:
+1. Relinks Claude memory directories to `workspace/.memory`
+2. Updates workspace `.mcp.json` browser MCP path (if present)
+3. Updates `~/.gemini/settings.json` browser MCP path (if present)
+4. Updates `~/.gemini/trustedFolders.json`
+5. Verifies Claude memory links
+
+## Scenario 1: Moved Folder on the Same Device
+
+Example: you moved `AiProjectsMaster` from `Download` to `Documents`.
+
+1. Move the workspace to the new location.
+2. Run the setup command with the new absolute path.
+3. Reopen Codex/Claude/Gemini.
+4. If prompted, rerun setup once more after opening Claude from the workspace root.
+
+### Example (Termux / Linux / macOS)
 
 ```bash
-cd /path/to/ai-workspace-move-sync
-bash setup-workspace.sh /new/path/to/workspace
+bash setup-workspace.sh /new/path/to/AiProjectsMaster
 ```
 
-3. If prompted, restart CLI sessions.
-
-### Expected Result
-
-- Claude memory links point to the new `workspace/.memory`
-- Gemini MCP/trust paths reflect the new location
-- Codex/Claude/Gemini sessions run from the new path cleanly
-
-## Scenario 2: Dropbox Sync To Another Computer
-
-### Steps (Windows)
-
-1. Wait for Dropbox to finish syncing.
-2. Run:
+### Example (Windows)
 
 ```powershell
-cd C:\path\to\ai-workspace-move-sync
-.\setup-workspace.ps1 -WorkspacePath "C:\Users\<you>\Dropbox\YourWorkspace"
+.\setup-workspace.ps1 -WorkspacePath "C:\Users\you\Documents\AiProjectsMaster"
 ```
 
-3. If symlink permission errors occur, rerun in Administrator PowerShell or enable Developer Mode.
+## Scenario 2: Synced to Another Computer (Dropbox/Git)
 
-### Expected Result
+1. Let sync fully finish.
+2. Confirm the workspace includes `.memory/` and project files.
+3. Run setup on that computer using that computer's local path.
+4. If Claude reports no matching project directories, open Claude once from workspace root and rerun setup.
 
-- New machine has correct local path wiring
-- Claude shared memory works
-- Gemini MCP/trust entries target the local Dropbox path
+### Example (Windows + Dropbox)
 
-## Scenario 3: New Subproject Added Later
+```powershell
+.\setup-workspace.ps1 -WorkspacePath "C:\Users\you\Dropbox\AiProjectsMaster"
+```
 
-If only memory linking is broken for a new subproject, use the linker only.
+## Scenario 3: Only Claude Memory Is Broken
+
+If MCP and trusted folder settings are already fine, run the memory-only script.
 
 ### Termux / Linux / macOS
 
@@ -95,44 +88,44 @@ bash link-memory.sh /path/to/workspace
 
 ## What Syncs vs What Is Local
 
-### Syncs with Git/Dropbox
+Syncs with Git/Dropbox:
 
 - Workspace files and code
 - `.memory/*.md`
-- Workspace docs and scripts
+- These setup scripts and docs
 
-### Device-Local (rewired by this toolkit)
+Always local to each machine:
 
-- `~/.claude/projects/.../memory` symlinks
-- `~/.gemini/settings.json` path entries
-- `~/.gemini/trustedFolders.json` path entries
+- `~/.claude/projects/.../memory` symlink targets
+- `~/.gemini/settings.json`
+- `~/.gemini/trustedFolders.json`
 
-## Tool-Specific Notes
+That is why setup must be run on each machine after move/sync.
 
-### Codex CLI
+## Safety Notes
 
-Codex usually works once workspace paths are consistent. This toolkit helps keep path-based project continuity stable after folder moves.
+When repairing Claude memory links, if a real `memory` directory already exists and has files, the scripts back it up first:
 
-### Claude Code
-
-The most common issue is broken or stale memory links in `~/.claude/projects/.../memory`.
-This toolkit repairs those links to `workspace/.memory`.
-
-### Gemini CLI
-
-The most common issue is old MCP/trusted paths pointing to the previous folder.
-This toolkit rewrites those paths to the current workspace location.
+- Backup naming format: `memory.bak.YYYYMMDD_HHMMSS`
 
 ## Troubleshooting
 
+### "Workspace path not found"
+
+Use a real absolute path and verify the folder exists.
+
+### "Shared memory directory not found"
+
+Create `workspace/.memory` (or restore it from sync), then rerun.
+
 ### "No Claude project dirs found for this workspace yet"
 
-Open Claude once from the workspace root, then rerun setup.
+Open Claude once from workspace root, then rerun setup.
 
-### MCP path still wrong
+### MCP path still looks wrong
 
-Check that `start-browser-mcp.sh` exists in the workspace, then rerun setup.
+Make sure `start-browser-mcp.sh` exists somewhere under the workspace.
 
-### Memory still not shared
+### Windows symlink permission error
 
-Run `link-memory` directly and review output for backup/symlink errors.
+Run PowerShell as Administrator or enable Developer Mode.
