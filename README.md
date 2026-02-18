@@ -1,19 +1,30 @@
-# AI Workspace Move + Sync Toolkit
+# Codex + Claude Code + Gemini CLI Workspace Move/Sync Toolkit
 
-One-command setup for moving AI coding workspaces across folders/devices while keeping shared memory working.
+One-command migration setup for AI coding workspaces using **OpenAI Codex CLI**, **Anthropic Claude Code**, and **Google Gemini CLI**.
 
-This toolkit is designed for Claude Code and Gemini CLI users who keep project memory in a workspace folder (for example `.memory/`) and need to rewire local machine paths after a move or Dropbox sync.
+If you move a workspace folder (for example `Download -> Documents`) or sync it to another machine (Dropbox, external drive, git clone), this toolkit rewires local paths so your AI CLI setup keeps working.
 
-## What It Solves
+## Search Keywords
 
-After moving a workspace, these usually break:
+Codex CLI workspace migration, Claude Code memory symlink fix, Gemini CLI MCP path update, AI coding assistant setup after folder move, Termux Claude Code setup, Dropbox AI project sync.
 
-- Claude memory symlinks under `~/.claude/projects/.../memory`
-- MCP script paths in `.mcp.json`
+## What This Toolkit Fixes
+
+After a workspace move, these are commonly broken:
+
+- Claude Code memory links under `~/.claude/projects/.../memory`
+- MCP script paths in workspace `.mcp.json`
 - Gemini MCP paths in `~/.gemini/settings.json`
-- Trusted folder paths in `~/.gemini/trustedFolders.json`
+- Gemini trusted folder paths in `~/.gemini/trustedFolders.json`
 
-This project fixes those automatically.
+This project repairs those in one run.
+
+## Who This Is For
+
+- Developers using **Codex CLI**, **Claude Code**, or **Gemini CLI**
+- Users running AI coding workflows across multiple devices
+- Teams sharing AI project folders via Dropbox/Git
+- Termux users on Android who move project folders often
 
 ## Quick Start
 
@@ -31,21 +42,33 @@ cd C:\path\to\ai-workspace-move-sync
 .\setup-workspace.ps1 -WorkspacePath "C:\path\to\your\workspace"
 ```
 
-## Files
+## Typical Scenarios
 
-- `setup-workspace.sh` / `setup-workspace.ps1` = full one-command setup
-- `link-memory.sh` / `link-memory.ps1` = memory symlink only
-- `docs/MOVE_AND_SYNC_GUIDE.md` = beginner step-by-step guide
+1. Move local workspace to a different folder.
+2. Open the same workspace on a second machine.
+3. Add a new subproject and restore shared memory links.
 
-## Detailed Guide
+Full walkthrough: `docs/MOVE_AND_SYNC_GUIDE.md`
 
-Use: `docs/MOVE_AND_SYNC_GUIDE.md`
+## Included Files
 
-## Notes
+- `setup-workspace.sh` = full setup (Termux/Linux/macOS)
+- `setup-workspace.ps1` = full setup (Windows)
+- `link-memory.sh` = memory-link-only repair (Termux/Linux/macOS)
+- `link-memory.ps1` = memory-link-only repair (Windows)
+- `docs/MOVE_AND_SYNC_GUIDE.md` = beginner-friendly guide
 
-- Run once per device after a move/sync.
-- If Claude project dirs do not exist yet, open Claude from the workspace once, then rerun.
-- On Windows, symlink creation may require Administrator PowerShell or Developer Mode.
+## Codex / Claude / Gemini Notes
+
+- **Codex CLI**: no special config needed here, but your workspace paths stay consistent after a move.
+- **Claude Code**: memory symlinks are repaired to `workspace/.memory`.
+- **Gemini CLI**: MCP/trusted-folder paths are updated to the new workspace location.
+
+## Troubleshooting
+
+- If setup says no Claude project dirs exist, open Claude once from the workspace and rerun.
+- If MCP remains broken, confirm `start-browser-mcp.sh` exists in the workspace.
+- If Windows symlink creation fails, run PowerShell as Administrator or enable Developer Mode.
 
 ## License
 

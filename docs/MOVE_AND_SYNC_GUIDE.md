@@ -1,85 +1,133 @@
-# Move and Sync Guide (Beginner Friendly)
+# Codex + Claude Code + Gemini CLI Move and Sync Guide (Beginner Friendly)
 
-This guide covers 3 common cases:
+This guide shows how to keep your AI coding workspace working after moving/syncing folders.
 
-1. Move workspace on the same device (for example Download -> Documents)
-2. Sync workspace to another computer (Dropbox)
-3. Add new subprojects and keep shared memory linked
+Supported workflows in this guide:
 
-## Quick Rule
+1. **OpenAI Codex CLI** workspace continuity
+2. **Anthropic Claude Code** memory-link repair
+3. **Google Gemini CLI** MCP/trust path repair
 
-After any move/sync, run setup once:
+## When To Use This
 
-- Termux / Linux / macOS:
+Use this guide when:
+
+- You move a project folder (example: `Download -> Documents`)
+- You open the workspace on a second machine (Dropbox/Git copy)
+- AI tools stop finding memory, MCP scripts, or trusted folders
+
+## One Command Rule
+
+Run setup once after any move/sync.
+
+### Termux / Linux / macOS
 
 ```bash
 bash setup-workspace.sh /path/to/workspace
 ```
 
-- Windows:
+### Windows (PowerShell)
 
 ```powershell
 .\setup-workspace.ps1 -WorkspacePath "C:\path\to\workspace"
 ```
 
-## Scenario 1: Same Device Move
+## Scenario 1: Move Workspace On The Same Device
 
-### Termux / Linux / macOS
+### Steps (Termux / Linux / macOS)
 
-1. Move your workspace folder.
-2. Run setup:
+1. Move workspace to the new folder.
+2. Run:
 
 ```bash
 cd /path/to/ai-workspace-move-sync
 bash setup-workspace.sh /new/path/to/workspace
 ```
 
-3. Verify:
+3. If prompted, restart CLI sessions.
 
-```bash
-ls -la ~/.claude/projects/*workspace*/* 2>/dev/null
-```
+### Expected Result
 
-## Scenario 2: Dropbox to Another Computer
+- Claude memory links point to the new `workspace/.memory`
+- Gemini MCP/trust paths reflect the new location
+- Codex/Claude/Gemini sessions run from the new path cleanly
 
-### Windows
+## Scenario 2: Dropbox Sync To Another Computer
 
-1. Wait for Dropbox sync to finish.
-2. Run setup:
+### Steps (Windows)
+
+1. Wait for Dropbox to finish syncing.
+2. Run:
 
 ```powershell
 cd C:\path\to\ai-workspace-move-sync
 .\setup-workspace.ps1 -WorkspacePath "C:\Users\<you>\Dropbox\YourWorkspace"
 ```
 
-3. If symlink errors appear, rerun in Administrator PowerShell or enable Developer Mode.
+3. If symlink permission errors occur, rerun in Administrator PowerShell or enable Developer Mode.
+
+### Expected Result
+
+- New machine has correct local path wiring
+- Claude shared memory works
+- Gemini MCP/trust entries target the local Dropbox path
 
 ## Scenario 3: New Subproject Added Later
 
-If memory is not shared in a new subproject, run linker only:
+If only memory linking is broken for a new subproject, use the linker only.
 
-- Termux / Linux / macOS:
+### Termux / Linux / macOS
 
 ```bash
 bash link-memory.sh /path/to/workspace
 ```
 
-- Windows:
+### Windows
 
 ```powershell
 .\link-memory.ps1 -WorkspacePath "C:\path\to\workspace"
 ```
 
+## What Syncs vs What Is Local
+
+### Syncs with Git/Dropbox
+
+- Workspace files and code
+- `.memory/*.md`
+- Workspace docs and scripts
+
+### Device-Local (rewired by this toolkit)
+
+- `~/.claude/projects/.../memory` symlinks
+- `~/.gemini/settings.json` path entries
+- `~/.gemini/trustedFolders.json` path entries
+
+## Tool-Specific Notes
+
+### Codex CLI
+
+Codex usually works once workspace paths are consistent. This toolkit helps keep path-based project continuity stable after folder moves.
+
+### Claude Code
+
+The most common issue is broken or stale memory links in `~/.claude/projects/.../memory`.
+This toolkit repairs those links to `workspace/.memory`.
+
+### Gemini CLI
+
+The most common issue is old MCP/trusted paths pointing to the previous folder.
+This toolkit rewrites those paths to the current workspace location.
+
 ## Troubleshooting
 
 ### "No Claude project dirs found for this workspace yet"
 
-Open Claude once from the target workspace, then rerun setup.
+Open Claude once from the workspace root, then rerun setup.
 
 ### MCP path still wrong
 
-Make sure `start-browser-mcp.sh` exists somewhere inside your workspace. Then rerun setup.
+Check that `start-browser-mcp.sh` exists in the workspace, then rerun setup.
 
 ### Memory still not shared
 
-Run the `link-memory` script directly and check output for backup/link errors.
+Run `link-memory` directly and review output for backup/symlink errors.
